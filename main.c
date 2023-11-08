@@ -14,7 +14,7 @@ lv_disp_t *disp;
 
 lv_ui guider_ui;
 
-#define DEMO_MUSIC 0
+#define DEMO_MUSIC 1
 
 int main(int argc, char **argv)
 {

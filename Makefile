@@ -9,11 +9,12 @@ WARNINGS = -Wall -Wextra \
 
 CFLAGS += -O3 -g0 $(WARNINGS) -I$(LVGL_DIR)/$(LVGL_DIR_NAME) -I$(LVGL_DIR) -I. 
 
-LDFLAGS ?= -lm
+LDFLAGS ?= -lm -lpthread
 
 BIN = $(LVGL_DIR)/output/app
 
 MAINSRC = $(LVGL_DIR)/main.c
+UNIXSRC = $(LVGL_DIR)/unixsock.c
 
 include $(LVGL_DIR)/generated/generated.mk
 include $(LVGL_DIR)/custom/custom.mk
@@ -27,6 +28,7 @@ COBJS = $(CSRCS:.c=$(OBJEXT))
 GEN_COBJS = $(GEN_CSRCS:.c=$(OBJEXT))
 
 MAINOBJ = $(MAINSRC:.c=$(OBJEXT))
+UNIXOBJ = $(UNIXSRC:.c=$(OBJEXT))
 
 SRCS = $(ASRCS) $(CSRCS) $(MAINSRC) $(GEN_CSRCS)
 OBJS = $(AOBJS) $(COBJS) $(GEN_COBJS)
@@ -38,8 +40,8 @@ all: default
 	@$(CC)  $(CFLAGS) -c $< -o $@ 
 	@echo "CC $<"
 	
-default: $(AOBJS) $(COBJS) $(MAINOBJ) $(GEN_COBJS)
-	$(CC) -o $(BIN) $(MAINOBJ) $(GEN_COBJS) $(AOBJS) $(COBJS) $(LDFLAGS)
+default: $(AOBJS) $(COBJS) $(MAINOBJ) $(GEN_COBJS) $(UNIXOBJ)
+	$(CC) -o $(BIN) $(MAINOBJ) $(GEN_COBJS) $(AOBJS) $(COBJS) $(LDFLAGS) $(UNIXOBJ)
 	@mv $(LVGL_DIR)/*.o $(LVGL_DIR)/objs/
 
 clean: 

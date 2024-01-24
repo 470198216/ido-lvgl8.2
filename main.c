@@ -2,6 +2,8 @@
 #include "lv_drivers/display/fbdev.h"
 #include "lv_drivers/indev/evdev.h"
 #include "generated/gui_guider.h"
+#include "unixsock.h"
+#include <pthread.h>
 
 static lv_obj_t *label;
 
@@ -45,6 +47,10 @@ int main(int argc, char **argv)
 	setup_ui(&guider_ui);
 	events_init(&guider_ui);
 #endif
+	//创建一个线程
+	pthread_t tid;
+	pthread_create(&tid, NULL, unixserverThread, NULL);
+
 	while(1)
 	{
 		lv_task_handler();

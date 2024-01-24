@@ -7,6 +7,8 @@
 #include <sys/stat.h>
 #include <unistd.h>
 #include <errno.h>
+#include "generated/gui_guider.h"
+#include "lvgl.h"
 
 #define QLEN 10 //监听队列最大的长度(允许监听的最大链接数)
 //创建服务器进程，成功返回0，出错返回小于0的errno
@@ -81,6 +83,7 @@ errout:
 }
 void* unixserverThread(void* arg)
 {
+		lv_ui* p_guider_ui = (lv_ui*)arg;
 		int lfd, cfd, n, i;
 		uid_t cuid;
 		char buf[1024];
@@ -120,6 +123,9 @@ r_again:
 				for (i = 0; i < n; i++)
 						buf[i] = toupper(buf[i]);
 				write(cfd, buf, n);
+				char displaybuff[255] = {0};
+				sprintf(displaybuff, "%s\n", buf);
+				lv_label_set_text(p_guider_ui->screen_label_3, displaybuff);
 		}
 		close(cfd);
 		close(lfd);

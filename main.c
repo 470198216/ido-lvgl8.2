@@ -3,6 +3,7 @@
 #include "lv_drivers/indev/evdev.h"
 #include "generated/gui_guider.h"
 #include "unixsock.h"
+#include "unixsockclient.h"
 #include <pthread.h>
 
 static lv_obj_t *label;
@@ -49,11 +50,14 @@ int main(int argc, char **argv)
 #endif
 	//创建一个线程
 	pthread_t tid;
-	pthread_create(&tid, NULL, unixserverThread, NULL);
+	pthread_create(&tid, NULL, unixserverThread, (void*)&guider_ui);
+	unixsockclientinit();
 
 	while(1)
 	{
 		lv_task_handler();
 		usleep(5000);
 	}
+	
+	closeclient();
 }

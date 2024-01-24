@@ -14,7 +14,7 @@ LDFLAGS ?= -lm -lpthread
 BIN = $(LVGL_DIR)/output/app
 
 MAINSRC = $(LVGL_DIR)/main.c
-UNIXSRC = $(LVGL_DIR)/unixsock.c
+UNIXSRC = $(LVGL_DIR)/unixsock.c $(LVGL_DIR)/unixsockclient.c
 
 include $(LVGL_DIR)/generated/generated.mk
 include $(LVGL_DIR)/custom/custom.mk

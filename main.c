@@ -49,9 +49,12 @@ int main(int argc, char **argv)
 	events_init(&guider_ui);
 #endif
 	//创建一个线程
+
+#ifdef DEMO_UNIX
 	pthread_t tid;
 	pthread_create(&tid, NULL, unixserverThread, (void*)&guider_ui);
 	unixsockclientinit();
+#endif
 
 	while(1)
 	{
